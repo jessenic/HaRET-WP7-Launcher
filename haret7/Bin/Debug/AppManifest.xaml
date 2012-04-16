@@ -1,7 +1,0 @@
-﻿<Deployment xmlns="http://schemas.microsoft.com/client/2007/deployment" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" EntryPointAssembly="haret7" EntryPointType="haret7.App" RuntimeVersion="4.7.50308.0">
-  <Deployment.Parts>
-    <AssemblyPart x:Name="haret7" Source="haret7.dll" />
-    <AssemblyPart x:Name="CSharp - DllImport" Source="CSharp - DllImport.dll" />
-    <AssemblyPart x:Name="WP7RootToolsSDK-0.1.6.0" Source="WP7RootToolsSDK-0.1.6.0.dll" />
-  </Deployment.Parts>
-</Deployment>
