@@ -13,6 +13,7 @@ using Microsoft.Phone.Controls;
 using CSharp___DllImport;
 using System.IO;
 using System.IO.IsolatedStorage;
+using Microsoft.Phone.Net.NetworkInformation;
 namespace haret7
 {
     public partial class MainPage : PhoneApplicationPage
@@ -97,14 +98,22 @@ namespace haret7
 
         private void installLatestButton_Click(object sender, RoutedEventArgs e)
         {
-            KillHaRET();
-            var request = (HttpWebRequest)WebRequest.Create("http://minecraft.digiex.org/jenkins/HaRET-WP7/latest/haret.exe");
-            request.UserAgent = "HaRET7 Launcher";
-            request.BeginGetResponse(r =>
+            if (!NetworkInterface.GetIsNetworkAvailable() || NetworkInterface.NetworkInterfaceType == NetworkInterfaceType.None)
             {
+                MessageBox.Show("No internet connection detected!", "Connection error", MessageBoxButton.OK);
+                return;
+            }
+            KillHaRET();
 
-                var httpRequest = (HttpWebRequest)r.AsyncState;
-                var httpResponse = (HttpWebResponse)httpRequest.EndGetResponse(r);
+            try
+            {
+                var request = (HttpWebRequest)WebRequest.Create("http://minecraft.digiex.org/jenkins/HaRET-WP7/latest/haret.exe");
+                request.UserAgent = "HaRET7 Launcher";
+                request.BeginGetResponse(r =>
+                {
+
+                    var httpRequest = (HttpWebRequest)r.AsyncState;
+                    var httpResponse = (HttpWebResponse)httpRequest.EndGetResponse(r);
                     using (var myStore = IsolatedStorageFile.GetUserStoreForApplication())
                     {
                         if (myStore.FileExists("haret\\haret.exe")) myStore.DeleteFile("haret\\haret.exe");
@@ -117,8 +126,13 @@ namespace haret7
                         }
                     }
 
-            }, request);
-            MessageBox.Show("Download complete.");
+                }, request);
+                MessageBox.Show("Download complete.");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Download failed: "+ex.Message,"Error",MessageBoxButton.OK);
+            }
             checkButtons();
         }
 
@@ -156,7 +170,16 @@ namespace haret7
 
         private void viewLogButton_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Not Implemented.");
+            CSharp___DllImport.Win32ErrorCode error = (CSharp___DllImport.Win32ErrorCode) CSharp___DllImport.DllImportCaller.lib.ShellExecuteEx7(HaRETInstallPath + @"\haretlog.txt", "");
+            if (error != Win32ErrorCode.NO_ERROR)
+            {
+                MessageBox.Show(error.ToString(), "Error", MessageBoxButton.OK);
+            }
+        }
+
+        private void openConsoleButton_Click(object sender, RoutedEventArgs e)
+        {
+            NavigationService.Navigate(new Uri("/TelnetPage.xaml", UriKind.Relative));
         }
     }
 }

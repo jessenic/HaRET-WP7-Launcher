@@ -69,6 +69,12 @@
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TelnetPage.xaml.cs">
+      <DependentUpon>TelnetPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Telnet\CreateConnectionAsyncArgs.cs" />
+    <Compile Include="Telnet\TelnetClient.cs" />
+    <Compile Include="Telnet\TelnetMessageReceivedFromServer.cs" />
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
@@ -76,6 +82,10 @@
       <Generator>MSBuild:Compile</Generator>
     </ApplicationDefinition>
     <Page Include="MainPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="TelnetPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
